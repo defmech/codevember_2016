@@ -189,6 +189,7 @@ Dog.Main = (function() {
 			element.position.y = (Math.floor(i / Math.pow(howManyInRow, 2)) * (width + gap)) - offSet;
 			element.position.z = ((Math.floor(i / howManyInRow) % howManyInRow) * (width + gap)) - offSet;
 			element.positionClone = element.position.clone();
+			element.scaleClone = element.scale.clone();
 			element.receiveShadow = true;
 			element.castShadow = true;
 			elementsContainer.add(element);
@@ -216,7 +217,7 @@ Dog.Main = (function() {
 	function animateElements() {
 		for (var i = 0; i < elements.length; i++) {
 			var element = elements[i];
-			element.scale.x = element.scale.y = element.scale.z = element.scale.y + ((Math.sin(Dog.Utils.degToRad((element.positionClone.x) + animOffset))) / 100) + ((Math.sin(Dog.Utils.degToRad((element.positionClone.z) + animOffset))) / 100);
+			element.scale.x = element.scale.y = element.scale.z = element.scaleClone.y + ((Math.sin(Dog.Utils.degToRad((element.positionClone.x) + animOffset))) / 1.5) + ((Math.sin(Dog.Utils.degToRad((element.positionClone.z) + animOffset))) / 1.5);
 		}
 
 		animOffset = (animOffset < 360) ? animOffset += animationSpeed : 0;

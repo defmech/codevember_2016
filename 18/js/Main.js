@@ -34,11 +34,10 @@ Dog.Main = (function() {
 
 	function setup() {
 
-		textureBumpMapLoader = new THREE.TextureLoader();
-
 		// init scene
 		scene = new THREE.Scene();
 
+		
 		// init camera
 		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 		camera.position.x = -400;
@@ -167,9 +166,6 @@ Dog.Main = (function() {
 			element.scale.x = element.scale.y = element.scale.z = Dog.Utils.randomRange(SCALE_MIN, 1);
 
 			element.scaleClone = element.scale.clone();
-
-			element.receiveShadow = true;
-			element.castShadow = true;
 
 			element.positionClone = element.position.clone();
 

@@ -1,0 +1,9 @@
+body {
+  background-color: #fff; }
+
+.smiley {
+  width: auto;
+  height: auto;
+  overflow: visible;
+  margin: 5px;
+  font-size: 32px; }

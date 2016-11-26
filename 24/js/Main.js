@@ -13,7 +13,7 @@ Dog.Main = (function() {
 	var textureBumpMapLoader, textureMapBump;
 
 	// Should scene show helpers
-	var USE_HELPERS = true;
+	var USE_HELPERS = false;
 
 	// Objects
 	var hero;
@@ -21,7 +21,7 @@ Dog.Main = (function() {
 	var topVertIndexes = [];
 	var animationSpeed = 2;
 	var animOffset = 0;
-	var elements = [];
+	var slices = [];
 	var elementsContainer;
 
 	var ORIGIN = {
@@ -46,7 +46,7 @@ Dog.Main = (function() {
 
 		// console.log('Main.js', camera.position);
 
-		camera.lookAt(0, 0, 0)
+		camera.lookAt(0, 0, 0);
 
 		// init renderer
 		renderer = new THREE.WebGLRenderer({
@@ -61,7 +61,6 @@ Dog.Main = (function() {
 
 		// add controls
 		orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
-
 
 		// add window resize handler
 		window.addEventListener('resize', onWindowResize, false);
@@ -86,17 +85,17 @@ Dog.Main = (function() {
 	}
 
 	function animateElements() {
-		for (var i = 0; i < elements.length; i++) {
-			var element = elements[i];
+		for (var i = 0; i < slices.length; i++) {
+			var slice = slices[i];
 
 			var elementRadius = Dog.Utils.distance({
-				x: element.position.x,
-				y: element.position.z
+				x: slice.position.x,
+				y: slice.position.z
 			}, ORIGIN);
 
 			var elementAngle = Dog.Utils.angleBetweenPointsInRad({
-				x: element.position.x,
-				y: element.position.z
+				x: slice.position.x,
+				y: slice.position.z
 			}, ORIGIN);
 
 			// Normalize to positive angle
@@ -112,11 +111,19 @@ Dog.Main = (function() {
 
 			var distanceRoundCirc = Dog.Utils.map(elementCirc, 0, maxCirc, 0, (Math.PI * 4));
 
-			element.position.x = Math.cos(elementAngle) * elementRadius;
-			element.position.z = Math.sin(elementAngle) * elementRadius;
+			slice.position.x = Math.cos(elementAngle) * elementRadius;
+			slice.position.z = Math.sin(elementAngle) * elementRadius;
 
-			var newScale = element.scaleClone.x * Dog.Utils.map(Math.sin(distanceRoundCirc), -1, 1, 0.3, 1.3);
-			element.scale.x = element.scale.y = element.scale.z = newScale;
+			slice.rotation.y = -elementAngle;
+
+			slice.rotation.z = Dog.Utils.map(Math.sin(distanceRoundCirc), -1, 1, -(Math.PI / 4), (Math.PI / 4));
+
+
+			for (var j = 0; j < slice.children.length; j++) {
+				var element = slice.children[j];
+				var newScale = element.scaleClone.x * Dog.Utils.map(Math.sin(distanceRoundCirc), -1, 1, 0.3, 1.3);
+				element.scale.x = element.scale.y = element.scale.z = newScale;
+			}
 		}
 	}
 
@@ -213,6 +220,8 @@ Dog.Main = (function() {
 
 
 		for (var i = 0; i < 360; i += 15) {
+			var slice = new THREE.Object3D();
+			elementsContainer.add(slice);
 
 			var material = new THREE.MeshPhongMaterial({
 				color: new THREE.Color('hsl(' + i + ', 100%, 50%)'),
@@ -226,26 +235,33 @@ Dog.Main = (function() {
 
 			var howManyPerSlice = 14;
 
+			slice.position.x = Math.cos(angleDonut) * donutRadius;
+			slice.position.z = Math.sin(angleDonut) * donutRadius;
+
+			slice.rotation.y = -angleDonut;
+
+			slices.push(slice);
+
+			if (USE_HELPERS) slice.add(new THREE.AxisHelper(25));
+
 			for (var j = 0; j < howManyPerSlice; j++) {
+
 				var element = new THREE.Mesh(geometry, material);
 
 				element.index = i;
 
-				// Position
-				element.position.x = Math.cos(angleDonut) * donutRadius;
-				element.position.z = Math.sin(angleDonut) * donutRadius;
-
-				// Rotation
-				element.rotation.y = -angleDonut;
-
 				// Move on local axis
 				var angleInner = ((Math.PI * 2) / howManyPerSlice) * j;
 
-				element.translateX(Math.cos(angleInner) * innerRadiusMax);
-				element.translateY(Math.sin(angleInner) * innerRadiusMax);
+				element.position.x = Math.cos(angleInner) * innerRadiusMax;
+				element.position.y = Math.sin(angleInner) * innerRadiusMax;
+
+				var distance = slice.position.length() + element.position.x;
 
 				// Scale relative to distance
-				element.scale.x = element.scale.y = element.scale.z = Dog.Utils.map(element.position.length(), donutRadius - innerRadiusMax, donutRadius + innerRadiusMax, 0.9, 1.2);
+				element.scale.x = element.scale.y = element.scale.z = Dog.Utils.map(distance, (donutRadius - innerRadiusMax), (donutRadius + innerRadiusMax), 0.7, 1.2);
+
+				// console.log('Main.js', 'element.position.length()', element.position.length());
 
 				element.scaleClone = element.scale.clone();
 
@@ -255,11 +271,10 @@ Dog.Main = (function() {
 
 				element.positionClone = element.position.clone();
 
-				elementsContainer.add(element);
+				slice.add(element);
 
 				if (USE_HELPERS) element.add(new THREE.AxisHelper(25));
 
-				elements.push(element);
 			}
 		}
 	}
@@ -289,7 +304,6 @@ Dog.Main = (function() {
 		animOffset = (animOffset < 360) ? animOffset += animationSpeed : 0;
 
 		animateElements();
-		// elementsContainer.rotation.y -= 0.01;
 
 		renderer.clear();
 		renderer.render(scene, camera);

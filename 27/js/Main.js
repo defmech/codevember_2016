@@ -94,8 +94,8 @@ Dog.Main = (function() {
 
 			var newSlicePos = vertClone.clone().multiplyScalar(Dog.Utils.map(Math.sin(Dog.Utils.degToRad(vertClone.x + vertClone.z + animOffset)), -1, 1, 0.75, 1.25));
 			vert.x = newSlicePos.x;
-			vert.y = newSlicePos.y;
-			vert.z = newSlicePos.z;
+			// vert.y = newSlicePos.y;
+			// vert.z = newSlicePos.z;
 
 		}
 

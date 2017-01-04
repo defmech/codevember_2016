@@ -1,0 +1,49 @@
+@import "reset";
+
+body{
+	font-family:  menu, Helvetica, sans-serif;
+}
+$btn-width: 80px;
+$btn-height: 40px;
+iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#ui {
+    button {
+        width: $btn-width;
+        height: $btn-height;
+        background-color: #2194ce;
+        color:  white;
+        border-radius: 6px;
+        outline: none;
+        border: 0;
+        &.left {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+        }
+        &.right {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+    }
+
+    span{
+    	color:  #888888;
+        text-shadow: 1px 1px rgba(255, 255, 255, 0.1);
+    	position: absolute;
+    	left:  50%;
+    	bottom:  10px;
+    	width:  100%;
+    	height:  40px;
+    	line-height: 40px;
+    	transform: translateX(-50%);
+    	text-align:  center;
+    }
+}

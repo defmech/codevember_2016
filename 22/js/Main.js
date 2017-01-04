@@ -233,7 +233,7 @@ Dog.Main = (function() {
 
 		animOffset = (animOffset < 360) ? animOffset += animationSpeed : animationSpeed;
 
-		console.log('Main.js', animOffset);
+		// console.log('Main.js', animOffset);
 
 		hero.geometry.computeFaceNormals();
 		hero.geometry.verticesNeedUpdate = true;

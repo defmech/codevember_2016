@@ -1,16 +1,17 @@
 @import "reset";
-
-body{
-	font-family:  menu, Helvetica, sans-serif;
+body {
+    font-family: menu, Helvetica, sans-serif;
 }
+
 $btn-width: 80px;
 $btn-height: 40px;
 iframe {
+    display: block;
     position: absolute;
     left: 0;
     top: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 
 #ui {
@@ -18,7 +19,7 @@ iframe {
         width: $btn-width;
         height: $btn-height;
         background-color: #2194ce;
-        color:  white;
+        color: white;
         border-radius: 6px;
         outline: none;
         border: 0;
@@ -33,17 +34,16 @@ iframe {
             bottom: 10px;
         }
     }
-
-    span{
-    	color:  #888888;
+    span {
+        color: #888888;
         text-shadow: 1px 1px rgba(255, 255, 255, 0.1);
-    	position: absolute;
-    	left:  50%;
-    	bottom:  10px;
-    	width:  100%;
-    	height:  40px;
-    	line-height: 40px;
-    	transform: translateX(-50%);
-    	text-align:  center;
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        transform: translateX(-50%);
+        text-align: center;
     }
 }

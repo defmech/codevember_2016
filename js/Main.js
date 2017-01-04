@@ -1,6 +1,6 @@
 class Codevember {
 
-  constructor() {
+  init() {
     this.minDate = 1;
     this.maxDate = 30;
 
@@ -13,6 +13,14 @@ class Codevember {
     }
 
     this.iframeRef = document.querySelector('iframe');
+
+    // Fix for growing iframe on ios!
+    if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent)) {
+      this.iframeRef.style.width = getComputedStyle(this.iframeRef).width;
+      this.iframeRef.style.height = getComputedStyle(this.iframeRef).height;
+      this.iframeRef.setAttribute('scrolling', 'no');
+    }
+
     this.textLabel = document.querySelector('#ui span');
 
     // Init the buttons
@@ -26,7 +34,7 @@ class Codevember {
   }
 
   getDate(location) {
-    console.log('Main.js', 'getDate', location);
+    // console.log('Main.js', 'getDate', location);
 
     const index = location.indexOf('#');
     let returnValue;
@@ -77,6 +85,7 @@ class Codevember {
 
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
-    new Codevember();
+    const codevember = new Codevember();
+    codevember.init();
   }
 };

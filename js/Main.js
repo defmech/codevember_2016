@@ -24,10 +24,9 @@ class Codevember {
     this.textLabel = document.querySelector('#ui span');
 
     // Init the buttons
-    Array.from(document.querySelectorAll('button')).map((button) => {
+    for (const button of document.querySelectorAll('button')) {
       button.addEventListener('click', this.handleButtonClick.bind(this), false);
-      return true;
-    });
+    }
 
     // Load day
     this.loadSource(this.dateIndex);

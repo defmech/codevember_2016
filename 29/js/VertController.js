@@ -26,7 +26,6 @@ this.Dog = this.Dog || {};
 			curVert = this.vertices[i];
 
 			if (Math.round(curVert.x) == Math.round(tmpVert.x) && Math.round(curVert.y) == Math.round(tmpVert.y) && Math.round(curVert.z) == Math.round(tmpVert.z)) {
-				console.log('VertController.js', 'match');
 				return curVert;
 			}
 		};
